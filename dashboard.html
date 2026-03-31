@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+</head>
+<body>
+<h2>SAQUIB SIR School Dashboard</h2>
+<h3>Add Student</h3>
+<input type="text" id="name" placeholder="Name">
+<input type="text" id="className" placeholder="Class">
+<input type="text" id="section" placeholder="Section">
+<input type="text" id="gender" placeholder="Gender">
+<input type="number" id="english" placeholder="English Marks">
+<input type="number" id="science" placeholder="Science Marks">
+<input type="number" id="marathi" placeholder="Marathi Marks">
+<input type="number" id="social_edu" placeholder="Social Science Marks">
+<input type="text" id="physical_edu" placeholder="Physical Education (Grade)">
+<input type="text" id="computer" placeholder="Computer (Grade)">
+<input type="text" id="deeniyat" placeholder="Deeniyat (Grade)">
+<input type="file" id="photo">
+<button onclick="addStudent()">Add Student</button>
+
+<h3>All Students</h3>
+<ul id="studentList"></ul>
+
+<script>
+function addStudent(){
+  let formData = new FormData();
+  formData.append('name',document.getElementById('name').value);
+  formData.append('className',document.getElementById('className').value);
+  formData.append('section',document.getElementById('section').value);
+  formData.append('gender',document.getElementById('gender').value);
+  formData.append('english',document.getElementById('english').value);
+  formData.append('science',document.getElementById('science').value);
+  formData.append('marathi',document.getElementById('marathi').value);
+  formData.append('social_edu',document.getElementById('social_edu').value);
+  formData.append('physical_edu',document.getElementById('physical_edu').value);
+  formData.append('computer',document.getElementById('computer').value);
+  formData.append('deeniyat',document.getElementById('deeniyat').value);
+  formData.append('photo',document.getElementById('photo').files[0]);
+
+  fetch('https://YOUR_RENDER_BACKEND_URL/add-student',{
+    method:'POST',
+    body: formData
+  }).then(res=>res.text()).then(alert);
+}
+
+function loadStudents(){
+  fetch('https://YOUR_RENDER_BACKEND_URL/students')
+  .then(res=>res.json())
+  .then(data=>{
+    let list = document.getElementById('studentList');
+    list.innerHTML = '';
+    data.forEach(s=>{
+      let li = document.createElement('li');
+      li.innerText = `${s.name} | ${s.class}-${s.section} | ${s.gender}`;
+      list.appendChild(li);
+    });
+  });
+}
+
+loadStudents();
+</script>
+</body>
+</html>
